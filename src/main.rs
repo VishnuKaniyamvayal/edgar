@@ -4,18 +4,18 @@ mod handlers;
 
 
 use app_state::AppState;
-use sqlx::{ postgres::PgPoolOptions};
+// use sqlx::{ postgres::PgPoolOptions};
 
 #[tokio::main]
 async fn main() {
     dotenvy::dotenv().ok();
 
     let db_connection_str = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-
-    let pool = PgPoolOptions::new().max_connections(5).connect(&db_connection_str).await.expect("connection to database failed");
+    println!("{:?}",db_connection_str);
+    // let pool = PgPoolOptions::new().max_connections(5).connect(&db_connection_str).await.expect("connection to database failed");
 
     let app_state = AppState {
-        db: pool
+        db: db_connection_str
     };
 
     let app = routers::init_router(app_state);
